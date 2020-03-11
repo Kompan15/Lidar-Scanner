@@ -4,7 +4,7 @@ SoftwareSerial Serial1(2, 3); //define software serial port name as Serial1 and 
 int Step=10;
 int Dir =11;
 int Ena =9;
-int stepTime=1000;
+//int stepTime=10;
 float angle = 0;
 bool dirL = 1;
 int dist; //actual distance measurements of LiDAR
@@ -15,7 +15,6 @@ int p;
 int i;
 int uart[9];  //save data measured by LiDAR
 const int HEADER = 0x59; //frame header of data package
-Servo Servo1;
 void setup() {
   pinMode(Step, OUTPUT);
   pinMode(Dir, OUTPUT);
@@ -24,6 +23,7 @@ void setup() {
   Serial1.begin(115200);  //set bit rate of serial port connecting LiDAR with Arduino
 }
 void loop() {
+    digitalWrite(Step, HIGH);
     if (Serial1.available()) {  //check if serial port has data input
     if (Serial1.read() == HEADER) { //assess data package frame header 0x59
       uart[0] = HEADER;
@@ -37,15 +37,10 @@ void loop() {
           dist = uart[2] + uart[3] * 256;     //calculate distance value
           digitalWrite(Ena, HIGH);
           if (angle >= 360){ dirL = !dirL; angle = 0; Serial.println("KONIEC SERII!!!");}
-          digitalWrite(Dir, dirL);
-          digitalWrite(Step, HIGH);   
-          delayMicroseconds(stepTime);                      
+          digitalWrite(Dir, dirL);            
           digitalWrite(Step, LOW);    
-          delayMicroseconds(stepTime);
-          angle+=0.45;
-         
+          angle+=0.0525;
           Serial.print(dist); //output measure distance value of LiDAR
-         
           Serial.print(":");
           Serial.println(angle); //output chip temperature of Lidar
         }
