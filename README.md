@@ -8,6 +8,7 @@ collecting rotation angle and measured distance and could graph cross-section of
 
 Resources:
 [raspberry documentation](https://pinout.xyz/#)
+
 [Libraries making it easier to work with GPIO pins](http://wiringpi.com/)
 
 I am working on raspberry, and the fun thing is that you can connect to it over Remote Desktop Connection which means you don't 
