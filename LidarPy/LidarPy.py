@@ -1,8 +1,17 @@
 # -*- coding: utf-8 -*
 import serial
 import time
-
+import RPi.GPIO as GPIO
 ser = serial.Serial('/dev/ttyAMA0', 115200)
+
+PwmPin1 = 12
+GPIO.setwarnings(False)
+GPIO.setmode(GPIO.BOARD) #Sposób numerowania Pinów
+GPIO.setup(PwmPin1,GPIO.OUT) #SetMode
+pi_pwm = GPIO.PWM(PwmPin1,1000) #czestotliwosc
+pi_pwm.start(80) #Stopien Wypelnienia
+
+GPIO.setup(PwmPin1, GPIO.OUT)
 
 def getTFminiData():
     millis1 = int(round(time.time() * 1000)) #klasyk, zbierz czas do roznicy
@@ -18,7 +27,6 @@ def getTFminiData():
                 millis = int(round(time.time() * 1000))
                 print(millis-millis1), #przecinek pozwala na printline.
                 print(distance)
-                
                 
 if __name__ == '__main__':
     try:
