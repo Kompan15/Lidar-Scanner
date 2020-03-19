@@ -1,26 +1,25 @@
-#include <SoftwareSerial.h>  //header file of software serial port 
+#include <SoftwareSerial.h>   //header file of software serial port 
 #include <Servo.h> 
 SoftwareSerial Serial1(2, 3); //define software serial port name as Serial1 and define pin2 as RX and pin3 as TX
-int Step=10;
-int Dir =11;
-int Ena =9;
-//int stepTime=10;
-float angle = 0;
+int Step = 10;                //step pin
+int Dir = 11;                 //direction controll pin
+int Ena = 9;                  //enable controll pin
+float angle = 0;              //Here i am holding incrementally increased/decreased stepper motor rotation angle.
 bool dirL = 1;
-int dist; //actual distance measurements of LiDAR
-int strength; //signal strength of LiDAR
-float temprature;
-int check;  //save check value
+int dist;                     //actual distance measurements of LiDAR
+int strength;                 //signal strength of LiDAR
+float temprature;             //What i like about TfMini Pro is that you can grab a hold on temp.
+int check;                    //save check value
 int p;
 int i;
-int uart[9];  //save data measured by LiDAR
-const int HEADER = 0x59; //frame header of data package
+int uart[9];                  //save data measured by LiDAR https://www.circuitbasics.com/basics-uart-communication/
+const int HEADER = 0x59;      //frame header of data package
 void setup() {
   pinMode(Step, OUTPUT);
   pinMode(Dir, OUTPUT);
   pinMode(Ena, OUTPUT);
-  Serial.begin(115200); //set bit rate of serial port connecting Arduino with computer
-  Serial1.begin(115200);  //set bit rate of serial port connecting LiDAR with Arduino
+  Serial.begin(115200);       //set bit rate of serial port connecting Arduino with computer
+  Serial1.begin(115200);      //set bit rate of serial port connecting LiDAR with Arduino
 }
 void loop() {
     digitalWrite(Step, HIGH);
