@@ -7,6 +7,7 @@ collecting rotation angle and measured distance and could graph cross-section of
 
 
 Resources:
+[TfMini Plus](https://cdn.sparkfun.com/assets/1/4/2/1/9/TFmini_Plus_A02_Product_Manual_EN.pdf)
 
 [raspberry documentation](https://pinout.xyz/#)
 
