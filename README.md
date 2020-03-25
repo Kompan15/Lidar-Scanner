@@ -8,9 +8,13 @@ collecting rotation angle and measured distance and could graph cross-section of
 
 Resources:
 
+[TfMini Plus](https://cdn.sparkfun.com/assets/1/4/2/1/9/TFmini_Plus_A02_Product_Manual_EN.pdf)
+
+[Stepper Motor](https://www.electronicoscaldas.com/datasheet/JK42HSxx-Series_Jkong-Motor.pdf)
+
 [raspberry documentation](https://pinout.xyz/#)
 
 [Libraries making it easier to work with GPIO pins](http://wiringpi.com/)
 
-I am working on raspberry, and the fun thing is that you can connect to it over Remote Desktop Connection which means you don't 
+I am working on raspberry & M328P, and the fun thing is that you can connect to it over Remote Desktop Connection which means you don't 
 need to have separate screen to see its desktop.
