@@ -13,8 +13,10 @@ GPIO.setup(PwmPin1,GPIO.OUT) #Definicja Pinu
 pi_pwm = GPIO.PWM(PwmPin1,1000) #GPIO.PWM(channel, frequency)
 pi_pwm.start(80) #%Wypełnienia sygnału w trakcie jednego okresu.
 GPIO.setup(PwmPin1, GPIO.OUT)
-
-
+fig = plt.figure()
+ax = plt.subplot(111, polar=True)
+theta = []
+dis = []
 def getTFminiData(): #Definicja Funkcji.
     millis1 = int(round(time.time() * 1000)) #klasyk, zbierz czas do roznicy
     while True:
@@ -31,24 +33,32 @@ def getTFminiData(): #Definicja Funkcji.
                 #print(distance)
                 return distance
                 
-def plotMydata(r):
-    #r = np.arange(0, 2, 0.01)
-    #theta = 2 * np.pi * r
-    ax = plt.subplot(111, projection='polar') #polar coordinates.
-    ax.scatter(np.pi, r) 
-    ax.set_rmax(300) #setmax.
-    ax.set_rticks([0.5, 1, 1.5, 2, 2.5, 3 ,3.5, 4, 4.5, 10])  # Less radial ticks, i really want to do it procedurally.
-    ax.set_rlabel_position(-22.5)  # Move radial labels away from plotted line
-    ax.grid(True)
-    ax.set_title("A line plot on a polar axis", va='bottom')
-    plt.show() #Yeah, its showing data but one measure point!, i need to animate it.
+def animate(i, theta, dis):
+    # Read distance
+    # Add x and y to lists
+    theta.append(np.pi)
+    dis.append(getTFminiData())
+    # Limit x and y lists to 20 items
+    theta = theta[-10:]
+    dis = dis[-10:]
+    # Draw x and y lists
+    ax.clear()
+    ax.scatter(theta, dis)
+    
+    # Format plot
+    plt.title('radial')
+                
+ax.set_rmax(100)			#Not really neccesary
+ax.set_rticks([0.5, 1, 1.5, 2, 2.5, 3 ,3.5, 4, 4.5, 10])      #Not really neccesary
+ani = animation.FuncAnimation(fig, animate, fargs=(theta, dis), interval=90)          
                       
 if __name__ == '__main__':
     try:
         if ser.is_open == False:
             ser.open()
-        x = getTFminiData()
-        plotMydata(x)
+        plt.show()
+        
+        
         
         
     except KeyboardInterrupt:   # Ctrl+C
