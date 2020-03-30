@@ -5,18 +5,24 @@ import RPi.GPIO as GPIO #i need those libraries to control my pins!
 import numpy as np
 import matplotlib.pyplot as plt #i need it to plot!
 import matplotlib.animation as animation
+from time import sleep
 ser = serial.Serial('/dev/ttyAMA0', 115200)
 PwmPin1 = 12
 GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BOARD) #Sposób numerowania Pinów
 GPIO.setup(PwmPin1,GPIO.OUT) #Definicja Pinu
-pi_pwm = GPIO.PWM(PwmPin1,1000) #GPIO.PWM(channel, frequency)
-pi_pwm.start(80) #%Wypełnienia sygnału w trakcie jednego okresu.
+pi_pwm = GPIO.PWM(PwmPin1,3000) #GPIO.PWM(channel, frequency)
+pi_pwm.start(20) #%Wypełnienia sygnału w trakcie jednego okresu.
 GPIO.setup(PwmPin1, GPIO.OUT)
+GPIO.setup(24, GPIO.OUT)
 fig = plt.figure()
 ax = plt.subplot(111, polar=True)
 theta = []
 dis = []
+def pulse():
+    GPIO.output(24, 1)
+    GPIO.output(24, 0)
+ 
 def getTFminiData(): #Definicja Funkcji.
     millis1 = int(round(time.time() * 1000)) #klasyk, zbierz czas do roznicy
     while True:
@@ -30,8 +36,9 @@ def getTFminiData(): #Definicja Funkcji.
                 distance = low + high * 256
                 millis = int(round(time.time() * 1000)) #Zbierz czas na zakonczenie funkcji.
                 #print(millis-millis1), #przecinek pozwala na printline.
-                #print(distance)
+                pulse()
                 return distance
+                
                 
 def animate(i, theta, dis):
     # Read distance
@@ -57,9 +64,6 @@ if __name__ == '__main__':
         if ser.is_open == False:
             ser.open()
         plt.show()
-        
-        
-        
         
     except KeyboardInterrupt:   # Ctrl+C
         if ser != None:
