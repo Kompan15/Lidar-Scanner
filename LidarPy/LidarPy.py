@@ -15,14 +15,19 @@ pi_pwm = GPIO.PWM(PwmPin1,3000) #GPIO.PWM(channel, frequency)
 pi_pwm.start(20) #%Wypełnienia sygnału w trakcie jednego okresu.
 GPIO.setup(PwmPin1, GPIO.OUT)
 GPIO.setup(24, GPIO.OUT)
+
 fig = plt.figure()
 ax = plt.subplot(111, polar=True)
+
 theta = []
 dis = []
+
 def pulse():
     GPIO.output(24, 1)
     GPIO.output(24, 0)
+
  
+
 def getTFminiData(): #Definicja Funkcji.
     millis1 = int(round(time.time() * 1000)) #klasyk, zbierz czas do roznicy
     while True:
