@@ -15,21 +15,23 @@ pi_pwm = GPIO.PWM(PwmPin1,3000) #GPIO.PWM(channel, frequency)
 pi_pwm.start(20) #%Wypełnienia sygnału w trakcie jednego okresu.
 GPIO.setup(PwmPin1, GPIO.OUT)
 GPIO.setup(24, GPIO.OUT)
-
+#global objects
 fig = plt.figure()
 ax = plt.subplot(111, polar=True)
-
 theta = []
 dis = []
-
+angle = 0
 def pulse():
     GPIO.output(24, 1)
     GPIO.output(24, 0)
-
+    global angle
+    if angle < 6.28:
+        angle += 0.08
+    if angle >= 6.28:
+        angle = 0
+    return angle
  
-
 def getTFminiData(): #Definicja Funkcji.
-    millis1 = int(round(time.time() * 1000)) #klasyk, zbierz czas do roznicy
     while True:
         count = ser.in_waiting
         if count > 8:
@@ -40,35 +42,30 @@ def getTFminiData(): #Definicja Funkcji.
                 high = int(recv[3].encode('hex'), 16)
                 distance = low + high * 256
                 millis = int(round(time.time() * 1000)) #Zbierz czas na zakonczenie funkcji.
-                #print(millis-millis1), #przecinek pozwala na printline.
-                pulse()
                 return distance
                 
                 
 def animate(i, theta, dis):
-    # Read distance
-    # Add x and y to lists
-    theta.append(np.pi)
+    theta.append(pulse())
     dis.append(getTFminiData())
-    # Limit x and y lists to 20 items
+    #Limits
     theta = theta[-10:]
     dis = dis[-10:]
-    # Draw x and y lists
+    #Draw
     ax.clear()
     ax.scatter(theta, dis)
-    
     # Format plot
     plt.title('radial')
                 
 ax.set_rmax(100)			#Not really neccesary
 ax.set_rticks([0.5, 1, 1.5, 2, 2.5, 3 ,3.5, 4, 4.5, 10])      #Not really neccesary
-ani = animation.FuncAnimation(fig, animate, fargs=(theta, dis), interval=90)          
-                      
-if __name__ == '__main__':
+ani = animation.FuncAnimation(fig, animate, fargs=(theta, dis), interval=90)              
+plt.show()      
+           
+if __name__ == '__main__': 
     try:
         if ser.is_open == False:
             ser.open()
-        plt.show()
         
     except KeyboardInterrupt:   # Ctrl+C
         if ser != None:
