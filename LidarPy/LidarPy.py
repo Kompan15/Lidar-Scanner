@@ -25,10 +25,7 @@ def pulse():
     GPIO.output(24, 1)
     GPIO.output(24, 0)
     global angle
-    if angle < 6.28:
-        angle += 0.08
-    if angle >= 6.28:
-        angle = 0
+    angle += 0.08
     return angle
  
 def getTFminiData(): #Definicja Funkcji.
@@ -44,13 +41,12 @@ def getTFminiData(): #Definicja Funkcji.
                 millis = int(round(time.time() * 1000)) #Zbierz czas na zakonczenie funkcji.
                 return distance
                 
-                
 def animate(i, theta, dis):
     theta.append(pulse())
     dis.append(getTFminiData())
     #Limits
-    theta = theta[-10:]
-    dis = dis[-10:]
+    theta = theta[-50:]
+    dis = dis[-50:]
     #Draw
     ax.clear()
     ax.scatter(theta, dis)
@@ -59,7 +55,7 @@ def animate(i, theta, dis):
                 
 ax.set_rmax(100)			#Not really neccesary
 ax.set_rticks([0.5, 1, 1.5, 2, 2.5, 3 ,3.5, 4, 4.5, 10])      #Not really neccesary
-ani = animation.FuncAnimation(fig, animate, fargs=(theta, dis), interval=90)              
+ani = animation.FuncAnimation(fig, animate, fargs=(theta, dis), interval=110)              
 plt.show()      
            
 if __name__ == '__main__': 
